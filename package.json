@@ -1,0 +1,47 @@
+{
+  "name": "darkpanda_spa",
+  "version": "0.0.0",
+  "description": "Darkpanda single page application.",
+  "main": "index.js",
+  "scripts": {
+    "build": "NODE_ENV=production webpack --config webpack.config.js",
+    "serve": "pm2 delete app 2> /dev/null || true && pm2 start ecosystem.config.js --env production",
+    "start": "NODE_ENV=production npm run build && npm run serve",
+    "dev": "NODE_ENV=development node webpack-dev-server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@emotion/babel-plugin": "^11.9.2",
+    "babel-loader": "^8.2.4",
+    "css-loader": "^6.7.1",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.8.1",
+    "webpack-manifest-plugin": "^5.0.0"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "axios": "^0.26.1",
+    "bootstrap": "^5.1.3",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "facepaint": "^1.2.1",
+    "node-static": "^0.7.11",
+    "process": "^0.11.10",
+    "prop-types": "^15.8.1",
+    "react": "^18.0.0",
+    "react-bootstrap": "^2.2.3",
+    "react-dom": "^18.0.0",
+    "react-icons": "^4.3.1",
+    "react-router-dom": "^6.3.0",
+    "rsuite": "^5.8.0"
+  }
+}
