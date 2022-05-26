@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const path = require('path') 
+const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 require('dotenv').config()
@@ -12,12 +12,12 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].bundle.js',
-    publicPath: NODE_ENV === 'development' 
-      ? '/' 
+    publicPath: NODE_ENV === 'development'
+      ? '/'
       : './',
     clean: true,
   },
-  resolve: { 
+  resolve: {
     extensions: ["*", ".js", ".jsx"],
     alias: {
       Atuu: path.resolve(__dirname, 'src')
@@ -49,16 +49,16 @@ module.exports = {
       template: path.resolve(__dirname, './index.html'),
       favicon: path.resolve(__dirname, './src/static/favicons/favicon.ico'),
     }),
-    
+
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
-    
+
     new webpack.EnvironmentPlugin([
-      'NODE_ENV', 
-      'SERVER_HOST', 
+      'NODE_ENV',
+      'SERVER_HOST',
     ]),
-  ], 
+  ],
 
   optimization: {
     splitChunks: {
@@ -71,5 +71,5 @@ module.exports = {
       },
     },
   },
-  
+
 }

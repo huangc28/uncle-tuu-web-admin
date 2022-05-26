@@ -1,9 +1,17 @@
 {
   "compilerOptions": {
+    "types": ["@emotion/react/types/css-prop"],
+    "jsx": "react-jsx",
+    "moduleResolution": "node", 
+    "checkJs": true,
     "target": "es6",
     "module": "es6",
     "paths": {
-      "Darkpanda/*": ["./src/*"]
+      "Atuu/*": ["./src/*"]
     }
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*"
+  ]
 }
