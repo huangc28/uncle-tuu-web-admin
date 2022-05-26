@@ -1,7 +1,7 @@
 module.exports = {
   apps : [
     {
-      name: 'app',
+      name: 'atuu_web_admin',
       script: './server.js',
       node_args: '-r dotenv/config',
       env_production: {

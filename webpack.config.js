@@ -42,10 +42,10 @@ module.exports = {
     ]
   },
   plugins: [
-    new WebpackManifestPlugin(),
+    new WebpackManifestPlugin({}),
 
     new HtmlWebpackPlugin({
-      title: 'darkpanda',
+      title: 'atuu',
       template: path.resolve(__dirname, './index.html'),
       favicon: path.resolve(__dirname, './src/static/favicons/favicon.ico'),
     }),

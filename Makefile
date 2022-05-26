@@ -10,8 +10,8 @@ endif
 # Build production bundle
 # Restart pm2
 deploy:
-	ssh -t root@staging-api.darkpanda.love 'cd ~/darkpanda/darkpanda-spa && \
-		git pull https://$(GITHUB_USER):$(GITHUB_ACCESS_TOKEN)@github.com/huangc28/darkpanda-spa.git && \
+	ssh -t root@staging-api.darkpanda.love 'cd ~/uncletuu/web_admin && \
+		git pull https://$(GITHUB_USER):$(GITHUB_ACCESS_TOKEN)@github.com/huangc28/uncle-tuu-web-admin.git && \
 		npm install && \
 		npm start'
 

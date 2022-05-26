@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production webpack --config webpack.config.js",
-    "serve": "pm2 delete app 2> /dev/null || true && pm2 start ecosystem.config.js --env production",
+    "serve": "pm2 delete atuu_web_admin 2> /dev/null || true && pm2 start ecosystem.config.js --env production",
     "start": "NODE_ENV=production npm run build && npm run serve",
     "dev": "NODE_ENV=development node webpack-dev-server.js"
   },
