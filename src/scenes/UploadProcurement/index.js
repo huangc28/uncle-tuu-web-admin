@@ -70,7 +70,6 @@ function UploadProcurement({ uploadStatus, uploadAPIError }) {
     }
 
     if (uploadStatus === loadingStatus.SUCCESS) {
-      console.log('set file list')
       setFileList([])
     }
   }, [uploadStatus])

@@ -4,6 +4,7 @@ function GlobalStyle(props) {
   return <Global 
     styles={css`
       html, body {
+        height: 100%;
         overflow-x: hidden;
       }
       
@@ -11,6 +12,10 @@ function GlobalStyle(props) {
         background-color: rgb(6, 6, 6);
         box-sizing: border-box;
         color: rgb(172, 172, 172);
+      }
+      
+      #root {
+        height: inherit;
       }
     `}
     
