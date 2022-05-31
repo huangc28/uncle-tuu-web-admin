@@ -5,7 +5,7 @@ import {
 import propTypes from 'prop-types'
 import { css } from '@emotion/react'
 
-function StockItem({ gameList, productList, onChangeGame, onChangeProduct }) {
+function StockItem({ index, gameList, productList, onChangeGame, onChangeProduct }) {
   return (
     <Form.Group controlId="gameitem">
       <div css={css`
@@ -16,7 +16,7 @@ function StockItem({ gameList, productList, onChangeGame, onChangeProduct }) {
           placeholder={'遊戲名稱'}
           name="gamepicker" 
           accepter={InputPicker} 
-          onChange={onChangeGame}
+          onChange={v => onChangeGame(v, index)}
           data={gameList}
         />
 
@@ -24,7 +24,7 @@ function StockItem({ gameList, productList, onChangeGame, onChangeProduct }) {
           placeholder={'商品名稱'}
           name="productpicker" 
           accepter={InputPicker} 
-          onChange={onChangeProduct}
+          onChange={v => onChangeProduct(v, index)}
           data={productList}
         />
 
@@ -41,6 +41,7 @@ function StockItem({ gameList, productList, onChangeGame, onChangeProduct }) {
 }
 
 StockItem.propTypes = {
+  index: propTypes.number,
   gameList: propTypes.array,
   productList: propTypes.array,
   onChangeGame: propTypes.func,

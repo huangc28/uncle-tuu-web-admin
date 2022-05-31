@@ -44,14 +44,15 @@ const formContainerStyle = css`
 //     role: "Master",
 //   }
 // ]}
-const initFormValue = {
-  gamepicker: 'Eugenia',
-  productpicker: 'Eugenia',
-}
+// const initFormValue = {
+//   gamepicker: 'Eugenia',
+//   productpicker: 'Eugenia',
+// }
 
-const gameIDToReadableName = {
-  
-
+const stockSelectionTemplate = {
+  gameBundleID: null,
+  prodID: null,
+  quantity: 0, 
 }
 
 /* 
@@ -73,6 +74,7 @@ function ExportStock({
   // set default game / product list
   const [gameList, setGameList] = useState([])
   const [productList, setProductList] = useState([])
+  const [stockSelections, setStockSelections] = useState([stockSelectionTemplate])
   const [formValue, setFormValue] = useState({})
   const dispatch = useDispatch()
   
@@ -102,11 +104,22 @@ function ExportStock({
 
   }, [fetchProdsStatus])
 
-  const handleSubmit = () => {
-    console.log('handleSubmit')
-  }
+  const handleChangeGame = (v, idx) => {
+    // Change stock setting at idx 
+    setStockSelections(
+      stockSelections.map((stockSelection, origIdx) => {
+          if (origIdx === idx) {
+            return {
+              ...stockSelection,
+              gameBundleID: v,
+            }
+          }      
+        
+          return stockSelection
+      })
+    )
 
-  const handleChangeGame = v => {
+    
     // Clear product list to prevent wrongful setting.
     setProductList([])
 
@@ -117,10 +130,24 @@ function ExportStock({
     // Dispatch event to load available products
     dispatch(fetchProducts({ gameBundleID: v }))
   }
-  const handleChangeProduct = () => {
-  
+  const handleChangeProduct = (v, idx) => {
+    setStockSelections(
+      stockSelections.map((stockSelection, origIdx) => {
+          if (origIdx === idx) {
+            return {
+              ...stockSelection,
+              prodID: v,
+            }
+          }      
+        
+          return stockSelection
+      })
+    )
   }
-  
+
+  const handleSubmit = () => {
+    console.log('handleSubmit')
+  }
 
   return (
     <div>
@@ -150,12 +177,18 @@ function ExportStock({
           </Form.Group>
         
           <div>
-            <StockItem 
-              onChangeGame={handleChangeGame}  
-              onChangeProduct={handleChangeProduct}  
-              gameList={gameList}
-              productList={productList}
-            />
+            {
+              stockSelections.map((_, idx) => (
+                <StockItem 
+                  key={idx}
+                  index={idx}
+                  onChangeGame={handleChangeGame}  
+                  onChangeProduct={handleChangeProduct}  
+                  gameList={gameList}
+                  productList={productList}
+                />
+              ))
+            }
           </div>
 
           <Divider/>
