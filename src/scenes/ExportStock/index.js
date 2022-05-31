@@ -1,12 +1,29 @@
 import { useState, useEffect } from 'react'
+import { useDispatch, connect } from 'react-redux'
 import { 
   FlexboxGrid, 
   Form, 
-  InputPicker,
   ButtonToolbar,
   Button,
+  Divider,
 } from 'rsuite'
 import { css } from '@emotion/react'
+
+import loadingStatus from 'Atuu/constants/loading_status'
+
+import StockItem from './components/StockItem'
+import { 
+  fetchGames,
+  selectFetchGamesError,
+  selectFetchGamesState,
+  selectGames,
+} from './redux/fetch_games'
+import { 
+  fetchProducts, 
+  selectProducts, 
+  selectFetchProdsStatus, 
+  selectFetchProdsError,
+} from './redux/fetch_product'
 
 const containerStyle = css`
   padding: 20px;
@@ -14,32 +31,92 @@ const containerStyle = css`
   grid-template-rows: 1fr 3fr;
 `
 
+const formContainerStyle = css`
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+`
+// selector data example: 
+// data={[
+//   {
+//     label: "Eugenia",
+//     value: "Eugenia",
+//     role: "Master",
+//   }
+// ]}
 const initFormValue = {
   gamepicker: 'Eugenia',
   productpicker: 'Eugenia',
 }
 
-function ExportStock() {
+const gameIDToReadableName = {
+  
+
+}
+
+/* 
+  Input text: userid
+    Game name ---> auto populate game item ID supported at the moment
+    Game item ID ---> auto populate quanity
+    quantity
+    submit button
+*/
+function ExportStock({ 
+  fetchGamesStatus, 
+  fetchGamesError, 
+  games,
+
+  fetchProdsStatus,
+  fetchProdsError,
+  products,
+}) {
   // set default game / product list
   const [gameList, setGameList] = useState([])
   const [productList, setProductList] = useState([])
-  const [formValue, setFormValue] = useState(initFormValue)
+  const [formValue, setFormValue] = useState({})
+  const dispatch = useDispatch()
   
   // Load list of games
   useEffect(() => {
-    
+    dispatch(fetchGames())
   }, [])
+  
+  useEffect(() => {
+    if (loadingStatus.SUCCESS === fetchGamesStatus) {
+      setGameList(games)
+    }
+
+    if (loadingStatus.FAILED === fetchGamesStatus) {
+      console.log('failed to load games', fetchGamesError)
+    }
+  }, [fetchGamesStatus])
+
+  useEffect(() => {
+    if (loadingStatus.SUCCESS === fetchProdsStatus) {
+      setProductList(products)
+    }
+
+    if (loadingStatus.FAILED === fetchProdsStatus) {
+      console.log('failed to load games', fetchGamesError)
+    }
+
+  }, [fetchProdsStatus])
 
   const handleSubmit = () => {
     console.log('handleSubmit')
   }
-  const handleOnChangeGame = () => {
+
+  const handleChangeGame = v => {
+    // Clear product list to prevent wrongful setting.
+    setProductList([])
+
+    if (!v || v.length === 0) {
+      return
+    }
+    
     // Dispatch event to load available products
+    dispatch(fetchProducts({ gameBundleID: v }))
   }
-  const handleOnChangeProduct = () => {
-  
-  }
-  
 
   return (
     <div>
@@ -57,7 +134,7 @@ function ExportStock() {
       </div> 
 
       {/* Export Form */}
-      <div>
+      <div css={formContainerStyle}>
         <Form 
           onSubmit={handleSubmit}
           formValue={formValue}
@@ -68,62 +145,39 @@ function ExportStock() {
             <Form.HelpText>用戶名為必填</Form.HelpText>
           </Form.Group>
         
-          <Form.Group controlId="gameitem">
-            <Form.Control 
-              placeholder={'遊戲名稱'}
-              name="gamepicker" 
-              accepter={InputPicker} 
-              onChange={handleOnChangeGame}
-              data={gameList}
-              // data={[
-              //   {
-              //     label: "Eugenia",
-              //     value: "Eugenia",
-              //     role: "Master"
-              //   }
-              // ]}
+          <div>
+            <StockItem 
+              onChangeGame={handleChangeGame}  
+              onChangeProduct={handleChangeProduct}  
+              gameList={gameList}
+              productList={productList}
             />
+          </div>
 
-            <Form.Control 
-              placeholder={'商品名稱'}
-              name="productpicker" 
-              accepter={InputPicker} 
-              onChange={handleOnChangeProduct}
-              data={productList}
-              // data={[
-              //   {
-              //     label: "Eugenia",
-              //     value: "Eugenia",
-              //     role: "Master",
-              //   }
-              // ]}
-            />
+          <Divider/>
 
-            <Form.Control 
-              placeholder={'數量'}
-              name="quantity" 
-              onChange={evt => {
-                console.log('evt', evt)
-              }}
-            />
-          </Form.Group>
           <Form.Group>
             <ButtonToolbar>
-              <Button type='submit' appearance="primary">Submit</Button>
+              <Button type='submit' appearance="primary">提交</Button>
             </ButtonToolbar>
           </Form.Group>
         </Form>      
       </div>
       
-      {/* 
-        Input text: userid
-          Game name ---> auto populate game item ID supported at the moment
-          Game item ID ---> auto populate quanity
-          quantity
-          submit button
-      */}
     </div>
   )
 }
 
-export default ExportStock
+const mapStateToProps = (state, _) => {
+  return {
+    fetchGamesStatus: selectFetchGamesState(state),
+    fetchGamesError: selectFetchGamesError(state),
+    games: selectGames(state),
+    
+    fetchProdsStatus: selectFetchProdsStatus(state),
+    fetchProdsError: selectFetchProdsError(state),
+    products: selectProducts(state),
+  }
+}
+
+export default connect(mapStateToProps, null)(ExportStock) 

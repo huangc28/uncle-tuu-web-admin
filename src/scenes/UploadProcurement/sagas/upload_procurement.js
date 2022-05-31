@@ -1,10 +1,9 @@
 import { all, takeLatest, call, put } from 'redux-saga/effects'
 import fetch from 'axios'
-import httpStatus from 'http-status-codes'
+
+import buildURI from 'Atuu/util/build_uri.js'
 
 import { uploadProcurement, uploadProcurementSuccess, uploadProcurementFailed } from '../redux/upload_procurement'
-
-const buildURI = uri => new URL(uri, process.env.SERVER_HOST)
 
 const uploadProcurementAPI = formData => (
   fetch({
@@ -24,11 +23,9 @@ function * uploadProcurementSaga(action) {
 
   const file = fileList[0]
   const formData = new FormData()
-  console.log('file', file.blobFile)
   formData.append('procurement', file.blobFile)
 
   try {
-    console.log('file', formData)
 
     // TODO
     //   Display filename thats just been uploaded

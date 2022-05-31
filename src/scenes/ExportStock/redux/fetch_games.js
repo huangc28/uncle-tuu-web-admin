@@ -25,9 +25,10 @@ export const fetchGamesSlice = createSlice({
   },
 })
 
-const selectSelf = state => state.fetchGamesSlice
+const selectSelf = state => state.exportStock.fetchGames
 export const selectFetchGamesState = createSelector(selectSelf, state => state.loadingStatus)
 export const selectFetchGamesError = createSelector(selectSelf, state => state.error)
+export const selectGames = createSelector(selectSelf, state => state.games)
 
 export const { fetchGames, fetchGamesSuccess, fetchGamesFailed } = fetchGamesSlice.actions
 export default fetchGamesSlice.reducer

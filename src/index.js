@@ -17,7 +17,7 @@ const root = createRoot(rootElement)
 // Since this project doesn't need SEO and path prettiness.
 // Ref: https://stackoverflow.com/questions/27928372/react-router-urls-dont-work-when-refreshing-or-writing-manually
 root.render(
-  <StrictMode>
+  <>
     <GlobalStyles />
     
     <Provider store={createStore()}>
@@ -30,5 +30,5 @@ root.render(
         </Routes>
       </HashRouter> 
     </Provider>
-  </StrictMode>
+  </>
 )
