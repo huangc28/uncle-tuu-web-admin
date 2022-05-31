@@ -1,4 +1,4 @@
-import { all, takeLatest, call, put } from 'redux-saga/effects'
+import { takeLatest, call, put } from 'redux-saga/effects'
 import fetch from 'axios'
 
 import buildURI from 'Atuu/util/build_uri.js'

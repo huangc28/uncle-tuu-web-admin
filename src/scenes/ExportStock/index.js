@@ -86,7 +86,6 @@ function ExportStock({
 }) {
   // set default game / product list
   const [gameList, setGameList] = useState([])
-  // const [productList, setProductList] = useState([])
   const [focusStock, setFocusStock] = useState(0)
   const [stockSelections, setStockSelections] = useState([
     Object.assign({}, stockSelectionTemplate)
@@ -135,20 +134,16 @@ function ExportStock({
     // Change stock setting at idx 
     setStockSelections(
       stockSelections.map((stockSelection, origIdx) => {
-          if (origIdx === idx) {
-            return {
-              ...stockSelection,
-              gameBundleID: v,
-            }
-          }      
+        if (origIdx === idx) {
+          return {
+            ...stockSelection,
+            gameBundleID: v,
+          }
+        }      
         
-          return stockSelection
+        return stockSelection
       })
     )
-
-    
-    // Clear product list to prevent wrongful setting.
-    // setProductList([])
 
     if (!v || v.length === 0) {
       return
@@ -178,7 +173,7 @@ function ExportStock({
           if (origIdx === idx) {
             return {
               ...stockSelection,
-              quantity: v,
+              quantity: +v,
             }
           }      
         
@@ -208,8 +203,12 @@ function ExportStock({
   const handleSubmit = () => {
     // Validate each row and assign error message  
     // Retrieve user and stock info here
-    console.log('handleSubmit', formValue)
-    // dispatch(assignStocks())
+    dispatch(assignStocks(
+      {
+        formValue,
+        stocks: stockSelections,
+      }
+    ))
   }
 
   return (
