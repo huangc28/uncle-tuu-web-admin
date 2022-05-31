@@ -5,8 +5,12 @@ import {
   Form, 
   ButtonToolbar,
   Button,
+  IconButton,
   Divider,
 } from 'rsuite'
+import PlusRoundIcon from '@rsuite/icons/PlusRound';
+import MinusRoundIcon from '@rsuite/icons/MinusRound';
+
 import { css } from '@emotion/react'
 
 import loadingStatus from 'Atuu/constants/loading_status'
@@ -144,6 +148,13 @@ function ExportStock({
       })
     )
   }
+  const handleAddStockRow = () => {
+    setStockSelections(stockSelections.concat(stockSelectionTemplate))
+  }
+  
+  const handleRemoveStockRow = () => {
+    setStockSelections(stockSelections.slice(0, stockSelections.length-1))
+  }
 
   const handleSubmit = () => {
     console.log('handleSubmit')
@@ -196,6 +207,15 @@ function ExportStock({
           <Form.Group>
             <ButtonToolbar>
               <Button type='submit' appearance="primary">提交</Button>
+              <IconButton 
+                icon={<PlusRoundIcon />} 
+                onClick={handleAddStockRow}
+              />
+              <IconButton
+                icon={<MinusRoundIcon />}
+                onClick={handleRemoveStockRow}
+              >
+              </IconButton>
             </ButtonToolbar>
           </Form.Group>
         </Form>      
