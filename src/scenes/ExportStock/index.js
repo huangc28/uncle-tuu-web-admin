@@ -28,6 +28,9 @@ import {
   selectFetchProdsStatus, 
   selectFetchProdsError,
 } from './redux/fetch_product'
+import {
+  assignStocks,
+} from './redux/assign_stocks'
 
 const containerStyle = css`
   padding: 20px;
@@ -57,6 +60,12 @@ const stockSelectionTemplate = {
   gameBundleID: null,
   prodID: null,
   quantity: 0, 
+  error: null,
+  products: [],
+}
+
+const formValueTemplate = {
+  username: '',
 }
 
 /* 
@@ -77,9 +86,12 @@ function ExportStock({
 }) {
   // set default game / product list
   const [gameList, setGameList] = useState([])
-  const [productList, setProductList] = useState([])
-  const [stockSelections, setStockSelections] = useState([stockSelectionTemplate])
-  const [formValue, setFormValue] = useState({})
+  // const [productList, setProductList] = useState([])
+  const [focusStock, setFocusStock] = useState(0)
+  const [stockSelections, setStockSelections] = useState([
+    Object.assign({}, stockSelectionTemplate)
+  ])
+  const [formValue, setFormValue] = useState(Object.assign({}, formValueTemplate))
   const dispatch = useDispatch()
   
   // Load list of games
@@ -99,7 +111,18 @@ function ExportStock({
 
   useEffect(() => {
     if (loadingStatus.SUCCESS === fetchProdsStatus) {
-      setProductList(products)
+      setStockSelections(
+        stockSelections.map((selection, idx) => {
+          if (idx === focusStock) {
+            return {
+              ...selection,
+              products
+            }
+          }
+
+          return selection
+        })
+      )
     }
 
     if (loadingStatus.FAILED === fetchProdsStatus) {
@@ -125,7 +148,7 @@ function ExportStock({
 
     
     // Clear product list to prevent wrongful setting.
-    setProductList([])
+    // setProductList([])
 
     if (!v || v.length === 0) {
       return
@@ -148,8 +171,34 @@ function ExportStock({
       })
     )
   }
+  
+  const handleChangeQuantity = (v, idx) => {
+    setStockSelections(
+      stockSelections.map((stockSelection, origIdx) => {
+          if (origIdx === idx) {
+            return {
+              ...stockSelection,
+              quantity: v,
+            }
+          }      
+        
+          return stockSelection
+      })
+    )
+  }
+
+  const handleChangeForm = v => {
+    setFormValue({
+      ...formValue,
+      ...v
+    })
+  }
+  
   const handleAddStockRow = () => {
-    setStockSelections(stockSelections.concat(stockSelectionTemplate))
+    setStockSelections(
+      stockSelections
+        .concat({...stockSelectionTemplate})
+    )
   }
   
   const handleRemoveStockRow = () => {
@@ -157,7 +206,10 @@ function ExportStock({
   }
 
   const handleSubmit = () => {
-    console.log('handleSubmit')
+    // Validate each row and assign error message  
+    // Retrieve user and stock info here
+    console.log('handleSubmit', formValue)
+    // dispatch(assignStocks())
   }
 
   return (
@@ -180,6 +232,7 @@ function ExportStock({
         <Form 
           onSubmit={handleSubmit}
           formValue={formValue}
+          onChange={handleChangeForm}
         >
           <Form.Group controlId="username">
             <Form.ControlLabel>用戶名</Form.ControlLabel>
@@ -195,8 +248,10 @@ function ExportStock({
                   index={idx}
                   onChangeGame={handleChangeGame}  
                   onChangeProduct={handleChangeProduct}  
+                  onChangeQuantity={handleChangeQuantity}
+                  onFocus={index => setFocusStock(index)}
                   gameList={gameList}
-                  productList={productList}
+                  productList={stockSelections[idx].products}
                 />
               ))
             }
@@ -212,6 +267,7 @@ function ExportStock({
                 onClick={handleAddStockRow}
               />
               <IconButton
+                disabled={stockSelections.length === 1}
                 icon={<MinusRoundIcon />}
                 onClick={handleRemoveStockRow}
               >
