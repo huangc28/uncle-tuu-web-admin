@@ -117,6 +117,10 @@ function ExportStock({
     // Dispatch event to load available products
     dispatch(fetchProducts({ gameBundleID: v }))
   }
+  const handleChangeProduct = () => {
+  
+  }
+  
 
   return (
     <div>
