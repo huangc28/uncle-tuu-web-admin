@@ -223,10 +223,9 @@ function ExportStock({
     const res = selections.map(({ gameBundleID, prodID, quantity, products }) => {
       let error = null
       
-      if (gameBundleID === null || gameBundleID.length === 0) error = new Error('沒選遊戲')  
-      if (prodID === null || prodID.length === 0) error = new Error('沒選商品')  
       if (quantity < 1) error = new Error('沒選數量')  
-       
+      if (prodID === null || prodID.length === 0) error = new Error('沒選商品')  
+      if (gameBundleID === null || gameBundleID.length === 0) error = new Error('沒選遊戲')  
       
       return {
         gameBundleID,
