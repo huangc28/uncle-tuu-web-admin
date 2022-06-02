@@ -30,6 +30,8 @@ import {
 } from './redux/fetch_product'
 import {
   assignStocks,
+  selectAssignStockStatus,
+  selectAssignStockError,
 } from './redux/assign_stocks'
 
 const containerStyle = css`
@@ -42,6 +44,14 @@ const formContainerStyle = css`
   padding: 20px;
   display: flex;
   justify-content: center;
+`
+
+const errorMessageStyle = css`
+  color: #B00020;
+`
+
+const successMessageStyle = css`
+  color: #5FD068;
 `
 // selector data example: 
 // data={[
@@ -83,6 +93,9 @@ function ExportStock({
   fetchProdsStatus,
   fetchProdsError,
   products,
+
+  assignStockError,
+  assignStockStatus
 }) {
   // set default game / product list
   const [gameList, setGameList] = useState([])
@@ -129,7 +142,7 @@ function ExportStock({
     }
 
   }, [fetchProdsStatus])
-
+  
   const handleChangeGame = (v, idx) => {
     // Change stock setting at idx 
     setStockSelections(
@@ -200,13 +213,44 @@ function ExportStock({
     setStockSelections(stockSelections.slice(0, stockSelections.length-1))
   }
 
+  const validateSelections = selections => {
+    const res = selections.map(({ gameBundleID, prodID, quantity, products }) => {
+      let error = null
+      
+      if (gameBundleID === null || gameBundleID.length === 0) error = new Error('沒選遊戲')  
+      if (prodID === null || prodID.length === 0) error = new Error('沒選商品')  
+      if (quantity < 1) error = new Error('沒選數量')  
+       
+      
+      return {
+        gameBundleID,
+        prodID,
+        quantity,
+        error,
+        products
+      } 
+    })  
+
+    
+    setStockSelections(res)
+    return !res.some(selection => selection.error !== null)
+  }
+  
   const handleSubmit = () => {
-    // Validate each row and assign error message  
-    // Retrieve user and stock info here
+    // - Validate each row and assign error message.
+    // - Retrieve user and stock info here. Normalize data to only things to need to send to BE. 
+    if (!validateSelections(stockSelections)) {
+      return
+    }
+
     dispatch(assignStocks(
       {
         formValue,
-        stocks: stockSelections,
+        stocks: stockSelections.map(({ gameBundleID, prodID, quantity}) => ({
+          game_bundle_id: gameBundleID,
+          prod_id: prodID,
+          quantity, 
+        })),
       }
     ))
   }
@@ -237,11 +281,12 @@ function ExportStock({
             <Form.ControlLabel>用戶名</Form.ControlLabel>
             <Form.Control name="username" />
             <Form.HelpText>用戶名為必填</Form.HelpText>
+            <Form.ErrorMessage></Form.ErrorMessage>
           </Form.Group>
         
           <div>
             {
-              stockSelections.map((_, idx) => (
+              stockSelections.map((selection, idx) => (
                 <StockItem 
                   key={idx}
                   index={idx}
@@ -251,12 +296,36 @@ function ExportStock({
                   onFocus={index => setFocusStock(index)}
                   gameList={gameList}
                   productList={stockSelections[idx].products}
+                  error={selection.error}
                 />
               ))
             }
           </div>
 
           <Divider/>
+          
+          <div css={css`
+            margin-bottom: 15px;   
+            height: 15px;
+          `}> 
+            {
+              assignStockStatus === loadingStatus.FAILED && (
+                <p css={errorMessageStyle}>
+                  {assignStockError}
+                </p>
+              )
+              
+            }
+            
+            {
+              assignStockStatus === loadingStatus.SUCCESS && (
+                <p css={successMessageStyle}>
+                  指派成功  
+                </p>
+              ) 
+            }
+
+          </div>
 
           <Form.Group>
             <ButtonToolbar>
@@ -289,6 +358,9 @@ const mapStateToProps = (state, _) => {
     fetchProdsStatus: selectFetchProdsStatus(state),
     fetchProdsError: selectFetchProdsError(state),
     products: selectProducts(state),
+    
+    assignStockStatus: selectAssignStockStatus(state), 
+    assignStockError: selectAssignStockError(state),
   }
 }
 

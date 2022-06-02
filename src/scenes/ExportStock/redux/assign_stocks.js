@@ -15,7 +15,7 @@ export const assignStocksReducer = createSlice({
     },
     assignStockFailed: (state, action) => {
       state.loadingStatus = loadingStatus.FAILED
-      state.error = action.payload
+      state.error = action.payload.error
     },
     assignStockSuccess: (state, _) => {
       state.loadingStatus = loadingStatus.SUCCESS
@@ -23,7 +23,7 @@ export const assignStocksReducer = createSlice({
   },
 })
 
-const selectSelf = state => state.assignStocks 
+const selectSelf = state => state.exportStock.assignStocks 
 export const selectAssignStockStatus = createSelector(selectSelf, state => state.loadingStatus)
 export const selectAssignStockError = createSelector(selectSelf, state => state.error)
 

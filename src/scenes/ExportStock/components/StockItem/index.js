@@ -6,9 +6,19 @@ import propTypes from 'prop-types'
 import { css } from '@emotion/react'
 
 const containerStyle = css`
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0;
+`
+
+const itemContainerStyle = css`
   margin: 10px 0; 
   display: flex;
   gap: 10px; 
+`
+
+const errorMessageStyle = css`
+  color: #B00020;
 `
 
 function StockItem({ 
@@ -19,63 +29,57 @@ function StockItem({
   onChangeProduct,
   onChangeQuantity,
   onFocus,
+  error,
 }) {
   return (
       <div 
         css={containerStyle}
         onFocus={() => onFocus(index)}
       >
-        <InputPicker
-          onChange={v => onChangeGame(v, index)}
-          placeholder={'遊戲名稱'}
-          data={gameList}
-        />
+        <div css={itemContainerStyle}>
+          <InputPicker
+            onChange={v => onChangeGame(v, index)}
+            placeholder={'遊戲名稱'}
+            data={gameList}
+          />
 
-        <InputPicker
-          onChange={v => onChangeProduct(v, index)}
-          placeholder={'商品名稱'}
-          data={productList}
-        />
+          <InputPicker
+            onChange={v => onChangeProduct(v, index)}
+            placeholder={'商品名稱'}
+            data={productList}
+          />
         
-        <InputNumber 
-          onChange={(v) => onChangeQuantity(v, index)}
-          placeholder={'數量'}
-        />
-        {/* <Form.Control 
-          placeholder={'遊戲名稱'}
-          name="gamepicker" 
-          accepter={InputPicker} 
-          onChange={v => onChangeGame(v, index)}
-          data={gameList}
-        />
-
-        <Form.Control 
-          placeholder={'商品名稱'}
-          name="productpicker" 
-          accepter={InputPicker} 
-          onChange={v => onChangeProduct(v, index)}
-          data={productList}
-        />
-
-        <Form.Control 
-          placeholder={'數量'}
-          name="quantity" 
-          onChange={evt => {
-            console.log('evt', evt)
-          }}
-        /> */}
+          <InputNumber 
+            onChange={(v) => onChangeQuantity(v, index)}
+            placeholder={'數量'}
+            min={1}
+          />
+          </div>
+          
+          <div css={css`
+            height: 10px;
+          `}>
+            {
+              error !== null && (
+                <p css={errorMessageStyle}>
+                  {error.message}
+                </p>
+              )
+            }
+          </div>   
       </div>
   )
 }
 
 StockItem.propTypes = {
-  index: propTypes.number,
+  index: propTypes.number.isRequired,
   gameList: propTypes.array,
   productList: propTypes.array,
   onChangeGame: propTypes.func,
   onChangeProduct: propTypes.func,
   onChangeQuantity: propTypes.func,
   onFocus: propTypes.func,
+  error: propTypes.object,
 }
 
 export default StockItem

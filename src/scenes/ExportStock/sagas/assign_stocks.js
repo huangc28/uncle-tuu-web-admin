@@ -18,11 +18,14 @@ const assignStocksAPI = ({ formValue, stocks }) => (
 
 function * assignStocksSaga(action) {
   const { payload: { formValue, stocks }  } = action
+  try {
+    yield call(assignStocksAPI, { formValue, stocks })
+    
+    yield put(assignStockSuccess())
 
-  const resp = yield call(assignStocksAPI, { formValue, stocks })
-  console.log('DEBUG ', resp)
-  // console.log('form value', formValue)
-  // console.log('stocks', stocks)
+  } catch (e) {
+    yield put(assignStockFailed({ error: e.response.data.err }))
+  }
 }
 
 export default function * () {
