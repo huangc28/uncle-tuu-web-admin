@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useDispatch, connect } from 'react-redux'
 import { 
   FlexboxGrid, 
@@ -7,6 +7,7 @@ import {
   Button,
   IconButton,
   Divider,
+  Schema,
 } from 'rsuite'
 import PlusRoundIcon from '@rsuite/icons/PlusRound';
 import MinusRoundIcon from '@rsuite/icons/MinusRound';
@@ -78,6 +79,10 @@ const formValueTemplate = {
   username: '',
 }
 
+const formValidateModel = Schema.Model({
+  username: Schema.Types.StringType().isRequired('用戶名不填你要賣給誰？')
+})
+
 /* 
   Input text: userid
     Game name ---> auto populate game item ID supported at the moment
@@ -105,6 +110,7 @@ function ExportStock({
   ])
   const [formValue, setFormValue] = useState(Object.assign({}, formValueTemplate))
   const dispatch = useDispatch()
+  const formRef = useRef()
   
   // Load list of games
   useEffect(() => {
@@ -239,6 +245,10 @@ function ExportStock({
   const handleSubmit = () => {
     // - Validate each row and assign error message.
     // - Retrieve user and stock info here. Normalize data to only things to need to send to BE. 
+    if (!formRef.current.check()) {
+      return
+    }
+    
     if (!validateSelections(stockSelections)) {
       return
     }
@@ -273,6 +283,8 @@ function ExportStock({
       {/* Export Form */}
       <div css={formContainerStyle}>
         <Form 
+          ref={formRef}
+          model={formValidateModel}
           onSubmit={handleSubmit}
           formValue={formValue}
           onChange={handleChangeForm}
@@ -281,7 +293,6 @@ function ExportStock({
             <Form.ControlLabel>用戶名</Form.ControlLabel>
             <Form.Control name="username" />
             <Form.HelpText>用戶名為必填</Form.HelpText>
-            <Form.ErrorMessage></Form.ErrorMessage>
           </Form.Group>
         
           <div>
