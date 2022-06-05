@@ -21,7 +21,22 @@ module.exports = {
     extensions: ["*", ".js", ".jsx"],
     alias: {
       Atuu: path.resolve(__dirname, 'src')
-    }
+    },
+    fallback: {
+      // 'url': require.resolve('url'),
+      'fs': false,
+      'tls': false,
+      'net': false,
+      'path': false,
+      'zlib': false,
+      'http': false,
+      'https': false,
+      'stream': false,
+      'crypto': false,
+      'crypto-browserify': false,
+      'buffer': false,
+      'util': false,
+    },
   },
   module: {
     rules: [

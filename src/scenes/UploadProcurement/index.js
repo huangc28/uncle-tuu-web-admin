@@ -2,16 +2,18 @@ import { useState, useRef, useEffect } from 'react'
 import {  useDispatch, connect } from 'react-redux'
 import Uploader from 'rsuite/Uploader'
 import Button from 'rsuite/Button'
-import { FlexboxGrid } from 'rsuite'
+import { FlexboxGrid, Divider } from 'rsuite'
 import { css } from '@emotion/react'
 
 import loadingStatus from 'Atuu/constants/loading_status.js'
 import { uploadProcurement, selectLoadingStatus, selectUploadError } from './redux/upload_procurement'
 
+import ProcurementStatusList from './containers/procurement_status_list'
+
 const containerStyle = css`
   padding: 20px;
   display: grid;
-  grid-template-rows: 1fr 3fr;
+  grid-template-rows: 1fr 3fr 3fr;
 `
 
 const titleContainerStyle = css`
@@ -170,7 +172,19 @@ function UploadProcurement({ uploadStatus, uploadAPIError }) {
         </FlexboxGrid.Item>
       </FlexboxGrid>
 
-      {/* File name */}
+      {/* Procurement process status */}
+      <div>
+        <Divider />
+        
+        <h3 css={css`
+          text-align: center;
+          margin-bottom: 10px;
+        `}> 
+          採購單入庫狀態 
+        </h3>
+        
+        <ProcurementStatusList />
+      </div>
     </div>
   )
 }
