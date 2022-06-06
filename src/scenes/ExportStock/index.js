@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useDispatch, connect } from 'react-redux'
 import { 
-  FlexboxGrid, 
   Form, 
   ButtonToolbar,
   Button,
@@ -38,7 +37,7 @@ import {
 const containerStyle = css`
   padding: 20px;
   display: grid;
-  grid-template-rows: 1fr 3fr;
+  grid-template-rows: 1fr 4fr;
 `
 
 const formContainerStyle = css`
@@ -265,18 +264,15 @@ function ExportStock({
   }
 
   return (
-    <div>
-      <div css={containerStyle}>
-        <FlexboxGrid justify='center'>
-          <FlexboxGrid.Item
-            colspan={8} 
-            css={css`text-align:center`}
-          >
-            <h2>
-              預約出庫
-            </h2>
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
+    <div css={containerStyle}>
+      <div css={css`
+        display: flex;
+        justify-content:center;
+        align-items: center;
+      `}>
+        <h2>
+          預約出庫
+        </h2>
       </div> 
 
       {/* Export Form */}
@@ -341,6 +337,7 @@ function ExportStock({
             <ButtonToolbar>
               <Button type='submit' appearance="primary">提交</Button>
               <IconButton 
+                disabled={stockSelections.length === 5}
                 icon={<PlusRoundIcon />} 
                 onClick={handleAddStockRow}
               />
@@ -354,7 +351,6 @@ function ExportStock({
           </Form.Group>
         </Form>      
       </div>
-      
     </div>
   )
 }

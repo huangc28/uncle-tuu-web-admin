@@ -12,9 +12,10 @@ const fetchProcurementAPI = () => {
 }
 
 function * fetchProcurementsSaga(action) {
-  console.log('DEBUG fetchProcurementsSaga')
   try {
     const resp = yield call(fetchProcurementAPI)
+
+    console.log('DEBUG fetchProcurementsSaga', resp)
 
     yield put(fetchProcurementsSuccess({procurements: resp.data}))
   } catch(e) {

@@ -6,14 +6,13 @@ import { FlexboxGrid, Divider } from 'rsuite'
 import { css } from '@emotion/react'
 
 import loadingStatus from 'Atuu/constants/loading_status.js'
-import { uploadProcurement, selectLoadingStatus, selectUploadError } from './redux/upload_procurement'
+import { uploadProcurement, selectLoadingStatus, selectUploadError, selectUploadedProcurement } from './redux/upload_procurement'
 
 import ProcurementStatusList from './containers/procurement_status_list'
 
 const containerStyle = css`
   padding: 20px;
   display: grid;
-  grid-template-rows: 1fr 3fr 3fr;
 `
 
 const titleContainerStyle = css`
@@ -55,9 +54,10 @@ const allowedUpadedFileMimes = {
 //   - [x]顯示上傳狀態
 //   - [x]Only support upload one file at a time 
 //   - []顯示入庫狀態
-function UploadProcurement({ uploadStatus, uploadAPIError }) {
+function UploadProcurement({ uploadStatus, uploadAPIError, uploadedProcurement }) {
   const [fileList, setFileList] = useState([])
   const [uploadError, setUploadErrorMessage] = useState(null)
+  const [uploadSuccessMessage, setUploadSuccessMessage] = useState(null)
   
   const uploaderRef = useRef()
   const dispatch = useDispatch()
@@ -73,6 +73,8 @@ function UploadProcurement({ uploadStatus, uploadAPIError }) {
 
     if (uploadStatus === loadingStatus.SUCCESS) {
       setFileList([])
+      console.log('DEBUG trigger uploadProcurement **', uploadProcurement)
+      setUploadSuccessMessage(`${uploadedProcurement.filename} 上傳成功`)
     }
   }, [uploadStatus])
 
@@ -100,6 +102,7 @@ function UploadProcurement({ uploadStatus, uploadAPIError }) {
               fileList={fileList}
               onChange={fileList => {
                 setUploadErrorMessage(null)
+                setUploadSuccessMessage(null)
                 setFileList(fileList)
               }}
               autoUpload={false}
@@ -153,9 +156,9 @@ function UploadProcurement({ uploadStatus, uploadAPIError }) {
             
             {/* Upload success */}
             {
-              uploadStatus === loadingStatus.SUCCESS && (
+              uploadSuccessMessage && (
                 <p css={successMessageStyle}>
-                  上傳成功
+                  { uploadSuccessMessage }
                 </p>
               )
             }
@@ -192,5 +195,7 @@ function UploadProcurement({ uploadStatus, uploadAPIError }) {
 const mapStateToProps = (state, _) => ({ 
   uploadStatus: selectLoadingStatus(state),
   uploadAPIError: selectUploadError(state),
+  uploadedProcurement: selectUploadedProcurement(state),
 })
+
 export default connect(mapStateToProps, null)(UploadProcurement)

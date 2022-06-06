@@ -38,6 +38,16 @@ function App() {
               >
                 預約出庫
               </Nav.Item>
+              
+              <Nav.Item
+                eventKey='3'
+                onClick={evt => {
+                  evt.preventDefault()
+                  navigate('assignments-status', { replace: true })
+                }}
+              >
+                出庫狀態
+              </Nav.Item>
             </Nav>
           </Sidenav.Body>
         </Sidenav>

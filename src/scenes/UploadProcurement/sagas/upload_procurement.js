@@ -4,6 +4,7 @@ import fetch from 'axios'
 import buildURI from 'Atuu/util/build_uri.js'
 
 import { uploadProcurement, uploadProcurementSuccess, uploadProcurementFailed } from '../redux/upload_procurement'
+import { appendProcurement } from '../containers/procurement_status_list/redux/fetch_procurements'
 
 const uploadProcurementAPI = formData => (
   fetch({
@@ -26,12 +27,10 @@ function * uploadProcurementSaga(action) {
   formData.append('procurement', file.blobFile)
 
   try {
+    const resp = yield call(uploadProcurementAPI, formData)
 
-    // TODO
-    //   Display filename thats just been uploaded
-    yield call(uploadProcurementAPI, formData)
-
-    yield put(uploadProcurementSuccess())
+    yield put(appendProcurement({ procurement: resp.data}))
+    yield put(uploadProcurementSuccess({ uploadedProcurement: resp.data }))
 
   } catch (e) {
     yield put(uploadProcurementFailed(e))

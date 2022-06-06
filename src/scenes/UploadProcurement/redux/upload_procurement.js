@@ -7,13 +7,15 @@ export const uploadProcurementSlice = createSlice({
   initialState: {
     loadingStatus: loadingStatus.EMPTY,
     error: null,
+    uploadedProcurement: {},
   },
   reducers: {
     uploadProcurement: (state, _) => {
       state.loadingStatus = loadingStatus.LOADING
     },
-    uploadProcurementSuccess: (state, _) => {
+    uploadProcurementSuccess: (state, action) => {
       state.loadingStatus = loadingStatus.SUCCESS
+      state.uploadedProcurement = action.payload.uploadedProcurement
     },
     uploadProcurementFailed: (state, action) => {
       state.loadingStatus = loadingStatus.SUCCESS
@@ -28,6 +30,7 @@ export const uploadProcurementSlice = createSlice({
 const selectSelf = state => state.uploadProcurement
 export const selectLoadingStatus = createSelector(selectSelf, state => state.loadingStatus)
 export const selectUploadError = createSelector(selectSelf, state => state.error)
+export const selectUploadedProcurement = createSelector(selectSelf, state => state.uploadedProcurement)
 
 export const { uploadProcurement, uploadProcurementSuccess, uploadProcurementFailed } = uploadProcurementSlice.actions
 export default uploadProcurementSlice.reducer
