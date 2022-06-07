@@ -81,6 +81,7 @@ function ExportStatus({ assignments, fetchExportsLoadingStatus }) {
           {
             Object.keys(assignments).map((assignmentUUID, assignmentIndex) => {
               const assignment = assignments[assignmentUUID]
+              const createdAt = new Date(assignment.createdAt)
               
               return (
                 <List.Item 
@@ -96,7 +97,7 @@ function ExportStatus({ assignments, fetchExportsLoadingStatus }) {
                     </div>
                    
                     <div>
-                      預約時間: {assignment.createdAt}
+                      預約時間: { createdAt.getFullYear() }/{ createdAt.getMonth() }/{ createdAt.getDate() } {createdAt.getHours()}:{createdAt.getMinutes()}:{createdAt.getSeconds()}
                     </div>
                     
                     <div 
