@@ -8,11 +8,11 @@ import { css } from '@emotion/react'
 import loadingStatus from 'Atuu/constants/loading_status.js'
 import { uploadProcurement, selectLoadingStatus, selectUploadError, selectUploadedProcurement } from './redux/upload_procurement'
 
+import ProcurementTemplate from './components/ProcurementTemplate'
 import ProcurementStatusList from './containers/procurement_status_list'
 
 const containerStyle = css`
   padding: 20px;
-  display: grid;
 `
 
 const titleContainerStyle = css`
@@ -53,7 +53,7 @@ const allowedUpadedFileMimes = {
 //   - [x]顯示檔案名稱
 //   - [x]顯示上傳狀態
 //   - [x]Only support upload one file at a time 
-//   - []顯示入庫狀態
+//   - [x]顯示入庫狀態
 function UploadProcurement({ uploadStatus, uploadAPIError, uploadedProcurement }) {
   const [fileList, setFileList] = useState([])
   const [uploadError, setUploadErrorMessage] = useState(null)
@@ -73,7 +73,6 @@ function UploadProcurement({ uploadStatus, uploadAPIError, uploadedProcurement }
 
     if (uploadStatus === loadingStatus.SUCCESS) {
       setFileList([])
-      console.log('DEBUG trigger uploadProcurement **', uploadProcurement)
       setUploadSuccessMessage(`${uploadedProcurement.filename} 上傳成功`)
     }
   }, [uploadStatus])
@@ -93,6 +92,9 @@ function UploadProcurement({ uploadStatus, uploadAPIError, uploadedProcurement }
         </FlexboxGrid>
         <hr />
       </div>
+      
+      {/* Excel Template */}
+      <ProcurementTemplate />
 
       {/* Upload Area */}
       <FlexboxGrid>
