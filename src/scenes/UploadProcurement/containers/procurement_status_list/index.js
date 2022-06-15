@@ -41,6 +41,9 @@ function ProcurementStatusList({ procurements }) {
         {
           procurements.map((procurement, index) => {
             const createdAt = new Date(procurement.created_at)
+            const failedReasonObj = !!procurement.failed_reason  
+              ? JSON.parse(procurement.failed_reason)
+              : {}
             
             return (
               <List.Item 
@@ -67,7 +70,7 @@ function ProcurementStatusList({ procurements }) {
                   {
                     procurement.status === FAILED && (
                       <div> 
-                        失敗原因: {procurement.failed_reason}
+                        失敗原因: {failedReasonObj.err}
                       </div>
                     )
                   }

@@ -15,8 +15,6 @@ function * fetchProcurementsSaga(action) {
   try {
     const resp = yield call(fetchProcurementAPI)
 
-    console.log('DEBUG fetchProcurementsSaga', resp)
-
     yield put(fetchProcurementsSuccess({procurements: resp.data}))
   } catch(e) {
     yield put(fetchProcurementsFailed({ error: e?.response?.data?.err }))   
