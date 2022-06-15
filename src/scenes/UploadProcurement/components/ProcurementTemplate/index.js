@@ -23,7 +23,13 @@ function ProcurementTemplate() {
         請參照採購單樣板，上傳前檢查一下第一行大標都要有。啊記得一定要簡體字，不然機器人找不到資料 <br />
         一個大標只能有一格，不要有兩格喔！
       </p>
-      <img src={procurementTemplatePNG} />
+      <img 
+        css={css`
+          width: 100%;
+          height: auto;
+        `}
+        src={procurementTemplatePNG} 
+      />
     </div>
   )
 }
