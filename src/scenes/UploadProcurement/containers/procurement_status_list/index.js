@@ -22,7 +22,7 @@ const StatusLight = styled.div`
   border-radius: 50%;
   background-color: ${({ status }) => {
     if (status ===  FAILED) return '#D61C4E'
-    if (status === IMPORTED) return '#D61C4E'
+    if (status === IMPORTED) return '#3EC70B'
     if (status === PENDING) return '#F7F7F7'
     return '#F7F7F7'
   }};
@@ -30,7 +30,6 @@ const StatusLight = styled.div`
 
 function ProcurementStatusList({ procurements }) {
   const dispatch = useDispatch()
-  
   useEffect(() => {
     dispatch(fetchProcurements())
   }, [])
