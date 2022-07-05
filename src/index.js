@@ -1,12 +1,13 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
-import { HashRouter, BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 
 import GlobalStyles from 'Atuu/styles/global'
 
 import createStore from './store'
-import App from './App.js'
+import AdminApp from './AdminApp.js'
+import ClientApp from './ClientApp'
+
 import UploadProcurement from './scenes/UploadProcurement'
 import ExportStock from './scenes/ExportStock'
 import ExportStatus from './scenes/ExportStatus'
@@ -24,12 +25,20 @@ root.render(
     
     <Provider store={createStore()}>
       <HashRouter>
+        {/* Admin App Routes */}
         <Routes>
-          <Route path='/' element={<App />} >
+          <Route path='admin' element={<AdminApp />} >
             <Route index element={<UploadProcurement />} />
             <Route path='export-stock' element={<ExportStock />} /> 
             <Route path='assignments-status' element={<ExportStatus />} />
-            <Route path='export-manual' element={<ExportManual />} />
+          </Route>
+        </Routes>
+        <Routes />
+
+        {/* Client App Routes */}
+        <Routes>
+          <Route path='/' element={<ClientApp />}>
+            <Route index element={<ExportManual />}/>
           </Route>
         </Routes>
       </HashRouter> 

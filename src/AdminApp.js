@@ -12,13 +12,12 @@ const mainStyle = css`
 `
 
 const navElements = {
-  '/': '上傳採購單',
+  '': '上傳採購單',
   'export-stock': '預約出庫',
   'assignments-status': '出庫狀態',
-  'export-manual': '出庫說明',
 }
 
-function App() {
+function AdminApp() {
   const navigate = useNavigate()
   return (
     <>
@@ -54,4 +53,4 @@ function App() {
   )
 }
 
-export default App
+export default AdminApp
