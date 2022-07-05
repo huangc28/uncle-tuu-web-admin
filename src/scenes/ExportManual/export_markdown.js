@@ -13,7 +13,7 @@ const getMarkdown = ({ video }) => `
 
 ## 出庫示範影片
 
-<video width="400" controls autoplay>
+<video width='280' height='300' controls autoplay>
   <source src=${video} type="video/mp4" />
 </video>
 
