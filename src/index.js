@@ -10,6 +10,7 @@ import App from './App.js'
 import UploadProcurement from './scenes/UploadProcurement'
 import ExportStock from './scenes/ExportStock'
 import ExportStatus from './scenes/ExportStatus'
+import ExportManual from './scenes/ExportManual'
 
 const rootElement = document.getElementById('root')
 const root = createRoot(rootElement) 
@@ -28,6 +29,7 @@ root.render(
             <Route index element={<UploadProcurement />} />
             <Route path='export-stock' element={<ExportStock />} /> 
             <Route path='assignments-status' element={<ExportStatus />} />
+            <Route path='export-manual' element={<ExportManual />} />
           </Route>
         </Routes>
       </HashRouter> 

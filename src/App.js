@@ -11,43 +11,38 @@ const mainStyle = css`
   grid-template-columns: 1fr 4fr;
 `
 
+const navElements = {
+  '/': '上傳採購單',
+  'export-stock': '預約出庫',
+  'assignments-status': '出庫狀態',
+  'export-manual': '出庫說明',
+}
+
 function App() {
   const navigate = useNavigate()
-  
   return (
     <>
       <main css={mainStyle}>
         <Sidenav>
           <Sidenav.Body>
-            <Nav activeKey='1'>
-              <Nav.Item 
-                eventKey='1'
-                onClick={evt => {
-                  evt.preventDefault()
-                  navigate('/', { replace: true })           
-                }}
-              >
-                上傳採購單
-              </Nav.Item>
-              <Nav.Item 
-                eventKey='2'
-                onClick={evt => {
-                  evt.preventDefault()
-                  navigate('export-stock', { replace: true })
-                }}
-              >
-                預約出庫
-              </Nav.Item>
-              
-              <Nav.Item
-                eventKey='3'
-                onClick={evt => {
-                  evt.preventDefault()
-                  navigate('assignments-status', { replace: true })
-                }}
-              >
-                出庫狀態
-              </Nav.Item>
+            <Nav>
+            {
+              Object.keys(navElements).map((routePath, key) => {
+                const label = navElements[routePath]
+                return (
+                  <Nav.Item
+                    key={key}
+                    eventKey={key.toString()}
+                    onClick = {evt => {
+                      evt.preventDefault()
+                      navigate(routePath, { replace: true })
+                    }}
+                  >
+                    { label }
+                  </Nav.Item>
+                )
+              })
+            }
             </Nav>
           </Sidenav.Body>
         </Sidenav>

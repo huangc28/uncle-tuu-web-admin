@@ -54,6 +54,10 @@ module.exports = {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: 'asset/resource',
       },
+      {
+        test: /\.(mov|mp4)$/,
+        loader: 'file-loader',
+      }
     ]
   },
   plugins: [
@@ -66,7 +70,7 @@ module.exports = {
     }),
 
     new webpack.ProvidePlugin({
-      process: 'process/browser',
+      process: 'process/browser.js',
     }),
 
     new webpack.EnvironmentPlugin([
