@@ -36,7 +36,7 @@ function ProcurementStatusList({ procurements }) {
   
   return (
     <div>
-      <List bordered>
+      <div>
         {
           procurements.map((procurement, index) => {
             const createdAt = new Date(procurement.created_at)
@@ -45,11 +45,13 @@ function ProcurementStatusList({ procurements }) {
               : {}
             
             return (
-              <List.Item 
+              <div
                 key={index} 
-                index={index}
                 css={css`
+                  padding: 12px;
+                  border: solid 1px #898AA6;
                   background-color: #1F2231;
+                  margin-bottom: 8px;
                 `}
               >
                 <div css={importStatusContainerStyle} >
@@ -74,11 +76,11 @@ function ProcurementStatusList({ procurements }) {
                     )
                   }
                 </div>
-              </List.Item>
+              </div>
             )
           })
         }
-      </List>
+      </div>
     </div>
   )
 }

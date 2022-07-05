@@ -54,6 +54,7 @@ const allowedUpadedFileMimes = {
 //   - [x]顯示上傳狀態
 //   - [x]Only support upload one file at a time 
 //   - [x]顯示入庫狀態
+//   - [] 入庫狀態要分隔
 function UploadProcurement({ uploadStatus, uploadAPIError, uploadedProcurement }) {
   const [fileList, setFileList] = useState([])
   const [uploadError, setUploadErrorMessage] = useState(null)
